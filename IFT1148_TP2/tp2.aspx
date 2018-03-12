@@ -31,7 +31,7 @@
             <!-- Nom de l'étudiant -->            
             <div style="padding: 5px;">
                 <asp:Label ID="Lb_NomEtudiant" runat="server" Text="Nom : "></asp:Label>
-                <asp:TextBox ID="Tb_NomEtudiant" runat="server" style="vertical-align:middle" Width="200px" ToolTip="Enterz votre nom">0</asp:TextBox>
+                <asp:TextBox ID="Tb_NomEtudiant" runat="server" style="vertical-align:middle" Width="200px" ToolTip="Entrez votre nom"></asp:TextBox>
                 <asp:RequiredFieldValidator ID="Rfv_NomEtudiant" runat="server" ErrorMessage="Veuillez entrer le nom de l'étudiant" ControlToValidate="Tb_NomEtudiant" Display="Dynamic" ForeColor="#CC0000" SetFocusOnError="True"></asp:RequiredFieldValidator>
             </div>
 
@@ -44,7 +44,7 @@
                         <asp:Label ID="Lb_Name1" runat="server" Text="TP 1 : "></asp:Label>
                     </td>
                     <td>
-                        <asp:TextBox ID="Tb_NoteTp1" runat="server">0</asp:TextBox>
+                        <asp:TextBox ID="Tb_NoteTp1" runat="server"></asp:TextBox>
                     </td>
                     <td>
                         <asp:Label ID="Lb_NoteMax1" runat="server" Text="" >/ <%= TP1_NOTE_MAX %></asp:Label>
@@ -58,7 +58,7 @@
                         <asp:Label ID="Lb_Name2" runat="server" Text="TP 2 : "></asp:Label>
                     </td>
                     <td>
-                        <asp:TextBox ID="Tb_NoteTp2" runat="server">0</asp:TextBox>                        
+                        <asp:TextBox ID="Tb_NoteTp2" runat="server"></asp:TextBox>                        
                     </td>
                     <td>
                         <asp:Label ID="Lb_NoteMax2" runat="server" Text="">/ <%= TP2_NOTE_MAX %></asp:Label>
@@ -72,7 +72,7 @@
                         <asp:Label ID="Lb_Name3" runat="server" Text="TP 3 : "></asp:Label>
                     </td>
                     <td>
-                        <asp:TextBox ID="Tb_NoteTp3" runat="server">0</asp:TextBox>
+                        <asp:TextBox ID="Tb_NoteTp3" runat="server"></asp:TextBox>
                     </td>
                     <td>
                         <asp:Label ID="Lb_NoteMax3" runat="server" Text="">/ <%= TP3_NOTE_MAX %></asp:Label>
@@ -86,7 +86,7 @@
                         <asp:Label ID="Lb_NameIntra" runat="server" Text="Examen intra : "></asp:Label>
                     </td>
                     <td>
-                        <asp:TextBox ID="Tb_NoteIntra" runat="server">0</asp:TextBox>
+                        <asp:TextBox ID="Tb_NoteIntra" runat="server"></asp:TextBox>
                     </td>
                     <td>
                         <asp:Label ID="Lb_NoteMaxIntra" runat="server" Text="">/ <%= INTRA_NOTE_MAX %> (compte pour <%= INTRA_NOTE_PERCENT %>)</asp:Label>
@@ -100,7 +100,7 @@
                         <asp:Label ID="Lb_NameFinal" runat="server" Text="Examen final : "></asp:Label>
                     </td>
                     <td>
-                        <asp:TextBox ID="Tb_NoteFinal" runat="server">0</asp:TextBox>
+                        <asp:TextBox ID="Tb_NoteFinal" runat="server"></asp:TextBox>
                     </td>
                     <td>
                         <asp:Label ID="Lb_NoteMaxFinal" runat="server" Text="">/ <%= FINAL_NOTE_MAX %> (compte pour <%= FINAL_NOTE_PERCENT %>)</asp:Label>

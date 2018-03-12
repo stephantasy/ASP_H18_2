@@ -23,10 +23,6 @@ Partial Class Tp2 : Inherits System.Web.UI.Page
     Private Const ERROR_MESSAGE_R_FINAL As String = "Le code R ne peut pas être utilisée ici"
 
 
-
-    Sub Application_Start()
-    End Sub
-
     'Renvoie un code binaire où les 1 indiquent qu'un R est présent dans le champ concerné 
     Private Function GetR_ByteCode() As Byte
         Dim rByteCode As Byte = 0
@@ -42,7 +38,7 @@ Partial Class Tp2 : Inherits System.Web.UI.Page
     Private Sub CalculNotes(ByRef tp As Double, ByRef intra As Double, ByRef final As Double, ByRef exam As Double)
 
         Dim tp1Temp, tp2Temp, tp3Temp As Double
-        Dim codeR As Byte = GetR_ByteCode()
+        Dim codeR As Byte = GetR_ByteCode()         'Récupère un Byte où les 4 premiers bits indiquent si un champ contient un R
 
         'Examen Final
         final = Double.Parse(Tb_NoteFinal.Text) / FINAL_NOTE_MAX * FINAL_NOTE_PERCENT
@@ -106,7 +102,6 @@ Partial Class Tp2 : Inherits System.Web.UI.Page
 
     ' Renvoie si le seuil à été atteint en fonction de la note rçue en paramètre
     Private Function IsSeuilReached(note As Double) As Boolean
-        '(True si >= 50%)
         Return note >= ((INTRA_NOTE_PERCENT + FINAL_NOTE_PERCENT) / NOTE_MAXIMUM * SEUIL_PERCENT)
     End Function
 
@@ -204,7 +199,6 @@ Partial Class Tp2 : Inherits System.Web.UI.Page
             AfficherResultats(resultatTravaux, resultaIntra, resultaFinal, resultat, noteLitteral, seuilAtteint)
 
         End If
-
     End Sub
 
 
@@ -278,15 +272,4 @@ Partial Class Tp2 : Inherits System.Web.UI.Page
         End If
     End Sub
 
-
-    'DEBUG
-    Private Sub DisplayDebugMessage(message As String, value As String)
-        Dim msg As String = "alert('" & message & " = " & value & "');"
-        ScriptManager.RegisterStartupScript(Me, Me.GetType(), "error", msg, True)
-    End Sub
-
 End Class
-
-
-'DEBUG : pour afficher un message à l'écran lors de l'exécution : 
-'       Page.ClientScript.RegisterStartupScript(Me.GetType(), "Window", "alert('The file is already closed');", True)

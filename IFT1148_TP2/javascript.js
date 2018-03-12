@@ -1,3 +1,13 @@
+/*
+   IFT1148 -TP2
+   Stéphane Barthélemy
+   20084771 - barthste
+*/
+
+
+/* ===== VALIDATION CLIENT ===== */
+	
+
 //Constantes
 var TP1_NOTE_MAX = 10;
 var TP2_NOTE_MAX = 15;
