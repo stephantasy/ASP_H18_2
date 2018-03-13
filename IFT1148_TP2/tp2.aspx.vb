@@ -26,12 +26,51 @@ Partial Class Tp2 : Inherits System.Web.UI.Page
     'Renvoie un code binaire où les 1 indiquent qu'un R est présent dans le champ concerné 
     Private Function GetR_ByteCode() As Byte
         Dim rByteCode As Byte = 0
-        rByteCode = If(Tb_NoteTp1.Text.ToUpper() = "R", rByteCode Or 1, rByteCode And 254)     '1er bit
-        rByteCode = If(Tb_NoteTp2.Text.ToUpper() = "R", rByteCode Or 2, rByteCode And 253)     '2e bit
-        rByteCode = If(Tb_NoteTp3.Text.ToUpper() = "R", rByteCode Or 4, rByteCode And 251)     '3e bit
-        rByteCode = If(Tb_NoteIntra.Text.ToUpper() = "R", rByteCode Or 8, rByteCode And 247)   '4e bit
+        rByteCode = If(Tb_NoteTp1.Text.ToUpper() = "R", rByteCode Or 1, rByteCode And 254)     '1er bit pour le TP1
+        rByteCode = If(Tb_NoteTp2.Text.ToUpper() = "R", rByteCode Or 2, rByteCode And 253)     '2e bit pour le TP2
+        rByteCode = If(Tb_NoteTp3.Text.ToUpper() = "R", rByteCode Or 4, rByteCode And 251)     '3e bit pour le TP3
+        rByteCode = If(Tb_NoteIntra.Text.ToUpper() = "R", rByteCode Or 8, rByteCode And 247)   '4e bit pour l'intra
         Return rByteCode
     End Function
+
+
+    'Calcul des notes pour les TP
+    Private Sub GetNotesTp(codeR As Byte, intra As Double, final As Double, ByRef tp1Temp As Double, ByRef tp2Temp As Double, ByRef tp3Temp As Double)
+        Select Case (codeR And 247) ' (on ignore le bit de l'intra)
+            Case 1  ' Manque que le TP 1
+                tp2Temp = Double.Parse(Tb_NoteTp2.Text)
+                tp3Temp = Double.Parse(Tb_NoteTp3.Text)
+                tp1Temp = ((tp2Temp / TP2_NOTE_MAX * TP1_NOTE_MAX) + (tp3Temp / TP3_NOTE_MAX * TP1_NOTE_MAX)) / 2
+            Case 2 ' Manque que le TP 2
+                tp1Temp = Double.Parse(Tb_NoteTp1.Text)
+                tp3Temp = Double.Parse(Tb_NoteTp3.Text)
+                tp2Temp = ((tp1Temp / TP1_NOTE_MAX * TP2_NOTE_MAX) + (tp3Temp / TP3_NOTE_MAX * TP2_NOTE_MAX)) / 2
+            Case 4 ' Manque que le TP 3
+                tp1Temp = Double.Parse(Tb_NoteTp1.Text)
+                tp2Temp = Double.Parse(Tb_NoteTp2.Text)
+                tp3Temp = ((tp1Temp / TP1_NOTE_MAX * TP2_NOTE_MAX) + (tp2Temp / TP2_NOTE_MAX * TP1_NOTE_MAX)) / 2
+            Case 3 ' Manque les TP 1 et 2
+                tp3Temp = Double.Parse(Tb_NoteTp3.Text)
+                tp1Temp = (tp3Temp / TP3_NOTE_MAX * TP1_NOTE_MAX)
+                tp2Temp = (tp3Temp / TP3_NOTE_MAX * TP2_NOTE_MAX)
+            Case 5 ' Manque les TP 1 et 3
+                tp2Temp = Double.Parse(Tb_NoteTp2.Text)
+                tp1Temp = (tp2Temp / TP2_NOTE_MAX * TP1_NOTE_MAX)
+                tp3Temp = (tp2Temp / TP2_NOTE_MAX * TP3_NOTE_MAX)
+            Case 6 ' Manque les TP 2 et 3
+                tp1Temp = Double.Parse(Tb_NoteTp1.Text)
+                tp2Temp = (tp1Temp / TP1_NOTE_MAX * TP2_NOTE_MAX)
+                tp3Temp = (tp1Temp / TP1_NOTE_MAX * TP3_NOTE_MAX)
+            Case 7 ' Manque les TP 1, 2 et 3
+                tp1Temp = ((intra / INTRA_NOTE_PERCENT * TP1_NOTE_MAX) + (final / FINAL_NOTE_PERCENT * TP1_NOTE_MAX)) / 2
+                tp2Temp = ((intra / INTRA_NOTE_PERCENT * TP2_NOTE_MAX) + (final / FINAL_NOTE_PERCENT * TP2_NOTE_MAX)) / 2
+                tp3Temp = ((intra / INTRA_NOTE_PERCENT * TP3_NOTE_MAX) + (final / FINAL_NOTE_PERCENT * TP3_NOTE_MAX)) / 2
+            Case Else ' Toutes les notes de TP sont là
+                tp1Temp = Double.Parse(Tb_NoteTp1.Text)
+                tp2Temp = Double.Parse(Tb_NoteTp2.Text)
+                tp3Temp = Double.Parse(Tb_NoteTp3.Text)
+        End Select
+    End Sub
 
 
     'Calcule les résultats des TP et des examens et les affectes aux variables passées par référence
@@ -50,52 +89,14 @@ Partial Class Tp2 : Inherits System.Web.UI.Page
             intra = Double.Parse(Tb_NoteIntra.Text) / INTRA_NOTE_MAX * INTRA_NOTE_PERCENT
         End If
 
-        'Traitement pour les TP (on ignore le bit de l'intra)
-        Select Case (codeR And 247)
-            Case 1
-                ' Manque que le TP 1
-                tp2Temp = Double.Parse(Tb_NoteTp2.Text)
-                tp3Temp = Double.Parse(Tb_NoteTp3.Text)
-                tp1Temp = ((tp2Temp / TP2_NOTE_MAX * TP1_NOTE_MAX) + (tp3Temp / TP3_NOTE_MAX * TP1_NOTE_MAX)) / 2
-            Case 2
-                ' Manque que le TP 2
-                tp1Temp = Double.Parse(Tb_NoteTp1.Text)
-                tp3Temp = Double.Parse(Tb_NoteTp3.Text)
-                tp2Temp = ((tp1Temp / TP1_NOTE_MAX * TP2_NOTE_MAX) + (tp3Temp / TP3_NOTE_MAX * TP2_NOTE_MAX)) / 2
-            Case 4
-                ' Manque que le TP 3
-                tp1Temp = Double.Parse(Tb_NoteTp1.Text)
-                tp2Temp = Double.Parse(Tb_NoteTp2.Text)
-                tp3Temp = ((tp1Temp / TP1_NOTE_MAX * TP2_NOTE_MAX) + (tp2Temp / TP2_NOTE_MAX * TP1_NOTE_MAX)) / 2
-            Case 3
-                ' Manque les TP 1 et 2
-                tp3Temp = Double.Parse(Tb_NoteTp3.Text)
-                tp1Temp = (tp3Temp / TP3_NOTE_MAX * TP1_NOTE_MAX)
-                tp2Temp = (tp3Temp / TP3_NOTE_MAX * TP2_NOTE_MAX)
-            Case 5
-                ' Manque les TP 1 et 3
-                tp2Temp = Double.Parse(Tb_NoteTp2.Text)
-                tp1Temp = (tp2Temp / TP2_NOTE_MAX * TP1_NOTE_MAX)
-                tp3Temp = (tp2Temp / TP2_NOTE_MAX * TP3_NOTE_MAX)
-            Case 6
-                ' Manque les TP 2 et 3
-                tp1Temp = Double.Parse(Tb_NoteTp1.Text)
-                tp2Temp = (tp1Temp / TP1_NOTE_MAX * TP2_NOTE_MAX)
-                tp3Temp = (tp1Temp / TP1_NOTE_MAX * TP3_NOTE_MAX)
-            Case 7
-                ' Manque les TP 1, 2 et 3
-                tp1Temp = ((intra / INTRA_NOTE_PERCENT * TP1_NOTE_MAX) + (final / FINAL_NOTE_PERCENT * TP1_NOTE_MAX)) / 2
-                tp2Temp = ((intra / INTRA_NOTE_PERCENT * TP2_NOTE_MAX) + (final / FINAL_NOTE_PERCENT * TP2_NOTE_MAX)) / 2
-                tp3Temp = ((intra / INTRA_NOTE_PERCENT * TP3_NOTE_MAX) + (final / FINAL_NOTE_PERCENT * TP3_NOTE_MAX)) / 2
-            Case Else
-                ' Toutes les notes de TP sont là
-                tp1Temp = Double.Parse(Tb_NoteTp1.Text)
-                tp2Temp = Double.Parse(Tb_NoteTp2.Text)
-                tp3Temp = Double.Parse(Tb_NoteTp3.Text)
-        End Select
+        'On récupère les notes des 3 TP
+        GetNotesTp(codeR, intra, final, tp1Temp, tp2Temp, tp3Temp)
 
-        tp = tp1Temp + tp2Temp + tp3Temp    'Total des TP
-        exam = intra + final                'Total des examens
+        'Total des TP
+        tp = tp1Temp + tp2Temp + tp3Temp
+
+        'Total des examens
+        exam = intra + final
 
     End Sub
 

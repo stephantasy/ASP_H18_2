@@ -22,7 +22,7 @@ var ERROR_MESSAGE_R_FINAL = "Le code R ne peut pas être utilisée ici";
 
 // Validation Client des champs
 function customClientValidation(source, args){
-    
+    	
     var RawValue = args.Value;                      // Valeur brute du champ
     var NumberValue = parseFloat(args.Value);       // Valeur numérique du champ
     var textBoxTraite = source.controltovalidate;   // Champ traité
